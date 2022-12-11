@@ -41,6 +41,10 @@ def remove_links(input_string):
     else:
         return input_string
 
+# A function trat removes trailing brackets from the backronym
+def remove_brackets(input_string):
+    return input_string.split(' (')[0]
+
 # A function that finds a suitable place to insert an acronym into the string
 def find_proper_place(input_string, acronym_len):
     #places_for_an_acronym = findall(r"(?=([a-zA-Z]{"+str(acronym_len)+"}))(?![^[]*\])",input_string)
@@ -50,7 +54,7 @@ def find_proper_place(input_string, acronym_len):
 # A function that tests if an acronym is a suitable one
 def find_good_acronym(input_acronym,all_meanings):
     #Tests if backronym is good
-    good_backronyms = [i for i in all_meanings if ''.join(list(zip(*i.split(' ')))[0]).lower() == input_acronym.lower()]
+    good_backronyms = [i for i in all_meanings if ''.join(list(zip(*i.split(' ')))[0]).lower() == input_acronym.lower() and not list(finditer('[^a-zA-Z ]',i))]
     if good_backronyms:
         return good_backronyms[0]
     else:
@@ -65,7 +69,7 @@ def give_good_acronym(input_acronym):
     request_result = get_acronyms(acf_url, input_acronym);
     all_meanings_generator = find_string_parameters(request_result.content, "result-list__body__meaning\">", "/td")
     all_meanings = [request_result.content[(i[0]+1):(i[1]+1)] for i in all_meanings_generator]
-    all_meanings = [remove_links(i) for i in all_meanings]
+    all_meanings = [remove_brackets(remove_links(i)) for i in all_meanings]
     return find_good_acronym(input_acronym, all_meanings)
     
 # A function that finds proper number of substitutions
