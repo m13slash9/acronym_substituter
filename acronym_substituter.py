@@ -114,6 +114,14 @@ def string_case_randomize(input_string):
     lst = [str.upper, str.lower]
     return ''.join(choice(lst)(c) for c in input_string)
 
+# A function that brings back unicode characters
+def unicode_recoder(input_string):
+    all_unicodes = list(finditer('&#\d*;',input_string))
+    for i in reversed(all_unicodes):
+      print(i,i.span()[0],i.span()[1],chr(int(i.group(0)[2:-1])))
+      input_string = input_string[:i.span()[0]] + chr(int(i.group(0)[2:-1])) + input_string[i.span()[1]:]
+    return input_string
+
 #--------Start of the actual function--------
 def acronym_substituter(all_text,string_separator = ' - ',acronym_length = 3, length_step = -1, acronyms_amount = 1, amount_step = 1, randomize_case=True, randomize_brackets=True):
 
@@ -142,7 +150,7 @@ def acronym_substituter(all_text,string_separator = ' - ',acronym_length = 3, le
                     brackets_here = choice(bracket_types)
                 else:
                     brackets_here = bracket_types[0]
-                all_entries[i] = all_entries[i][:j[0]]+brackets_here[0]+j[1]+brackets_here[1]+all_entries[i][(j[0]+j[2]):]
+                all_entries[i] = all_entries[i][:j[0]]+brackets_here[0]+unicode_recoder(j[1])+brackets_here[1]+all_entries[i][(j[0]+j[2]):]
    
     all_entries = [i+"\n" for i in all_entries];
     if randomize_case:
