@@ -84,9 +84,9 @@ def several_proper_subs(string_entry, acronym_len, amount_to_find):
         good_subs = []
         while len(good_subs)<amount_to_find and proper_places:
             if not good_subs:
-                good_subs += [(proper_places[0], give_good_acronym(string_entry[proper_places[0]:(proper_places[0]+acronym_len)]))]
+                good_subs += [(proper_places[0], give_good_acronym(string_entry[proper_places[0]:(proper_places[0]+acronym_len)]),acronym_len)]
             elif proper_places[0]>=good_subs[-1][0]+acronym_len:
-                good_subs += [(proper_places[0], give_good_acronym(string_entry[proper_places[0]:(proper_places[0]+acronym_len)]))]
+                good_subs += [(proper_places[0], give_good_acronym(string_entry[proper_places[0]:(proper_places[0]+acronym_len)]),acronym_len)]
             else:
                 pass
             if good_subs and not good_subs[-1][1]:
@@ -142,7 +142,7 @@ def acronym_substituter(all_text,string_separator = ' - ',acronym_length = 3, le
                     brackets_here = choice(bracket_types)
                 else:
                     brackets_here = bracket_types[0]
-                all_entries[i] = all_entries[i][:j[0]]+brackets_here[0]+j[1]+brackets_here[1]+all_entries[i][(j[0]+len(j[1].split())):]
+                all_entries[i] = all_entries[i][:j[0]]+brackets_here[0]+j[1]+brackets_here[1]+all_entries[i][(j[0]+j[2]):]
    
     all_entries = [i+"\n" for i in all_entries];
     if randomize_case:
