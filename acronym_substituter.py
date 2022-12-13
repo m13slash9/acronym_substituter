@@ -118,7 +118,6 @@ def string_case_randomize(input_string):
 def unicode_recoder(input_string):
     all_unicodes = list(finditer('&#\d*;',input_string))
     for i in reversed(all_unicodes):
-      print(i,i.span()[0],i.span()[1],chr(int(i.group(0)[2:-1])))
       input_string = input_string[:i.span()[0]] + chr(int(i.group(0)[2:-1])) + input_string[i.span()[1]:]
     return input_string
 
